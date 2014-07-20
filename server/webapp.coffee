@@ -5,7 +5,7 @@ app = require "./express"
 
 app.get "/", (req, res) ->
   return res.redirect "/login" unless req.user?
-  res.render "index", name: config.nickname
+  res.render "index", user: req.user
 
 app.get "/logout", (req, res) ->
   req.logout()
@@ -16,7 +16,8 @@ app.get "/login", (req, res) ->
   res.render "login"
 
 
-app.get "/auth/twitter", passport.authenticate("twitter")
+app.get "/auth/twitter", passport.authenticate "twitter"
 app.get "/auth/twitter/callback",
-  passport.authenticate "twitter", {successRedirect:"/", falureRedirect:"/login"}
-
+  passport.authenticate "twitter",
+    successRedirect: "/"
+    falureRedirect: "/login"
